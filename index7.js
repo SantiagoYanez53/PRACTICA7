@@ -13,7 +13,7 @@ function writeDatabase (newKoder) {
 
 server.use(express.json());
 
-// Ruta para registrar un nuevo koder
+//  nuevo koder
 server.post('/koders', (req, res) => {
     const { name, age, gen, active } = req.body;
     if (!name , !age , !gen || typeof active !== 'boolean') {
@@ -27,10 +27,10 @@ server.post('/koders', (req, res) => {
     res.status(201).json({ message: 'Koder registered successfully', koder: { name, age, gen, active } });
   });
 
-// Ruta para listar todos los koders
+// lista de los koders
 server.get('/koders', (req, res) => {
-    fs.readFile('./koders.json', 'utf-8', (err, data) => {
-        if (err) {
+    fs.readFile('./koders.json', 'utf-8', (falla, data) => {
+        if (falla) {
             return res.status(500).json({ error: 'Error al leer la base de datos' });
         }
 
@@ -39,12 +39,12 @@ server.get('/koders', (req, res) => {
     });
 });
 
-// Ruta para eliminar un koder por nombre
+// eliminar un koder por nombre
 server.delete('/koders/:name', (req, res) => {
     const { name } = req.params;
 
-    fs.readFile('./koders.json', 'utf-8', (err, data) => {
-        if (err) {
+    fs.readFile('./koders.json', 'utf-8', (falla, data) => {
+        if (falla) {
             return res.status(500).json({ error: 'Error al leer la base de datos' });
         }
 
@@ -56,8 +56,8 @@ server.delete('/koders/:name', (req, res) => {
             return res.status(404).json({ error: 'Koder no encontrado' });
         }
 
-        fs.writeFile('./koders.json', JSON.stringify(koders, null, 2), (err) => {
-            if (err) {
+        fs.writeFile('./koders.json', JSON.stringify(koders, null, 2), (falla) => {
+            if (falla) {
                 return res.status(500).json({ error: 'Error al escribir en la base de datos' });
             }
             res.json({ message: 'Koder eliminado exitosamente' });
@@ -65,10 +65,10 @@ server.delete('/koders/:name', (req, res) => {
     });
 });
 
-// Ruta para eliminar todos los koders
+// eliminar todo
 server.delete('/koders', (req, res) => {
-    fs.writeFile('./koders.json', '[]', (err) => {
-        if (err) {
+    fs.writeFile('./koders.json', '[]', (falla) => {
+        if (falla) {
             return res.status(500).json({ error: 'Error al escribir en la base de datos' });
         }
         res.json({ message: 'Todos los koders han sido eliminados' });
